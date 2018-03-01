@@ -18,4 +18,8 @@ public class UserService {
     public void   delete(Integer id){
         userRepository.delete(id);
     }
+
+    public User  update(User param){
+        return  userRepository.save(param);
+    }
 }

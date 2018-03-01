@@ -32,4 +32,7 @@ public class User {
      */
     @Column(length = 127)
     private String password;
+
+    @Column
+    private Boolean enable=Boolean.TRUE;
 }
