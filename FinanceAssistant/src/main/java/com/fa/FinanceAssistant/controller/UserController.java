@@ -10,10 +10,7 @@ import com.fa.FinanceAssistant.viewmodel.UpdateUserRequest;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by wenfeng on 2018/2/28.
@@ -33,40 +30,46 @@ public class UserController {
     }
 
     @PostMapping(value = "/update")
-    public String update(@RequestBody UpdateUserRequest request){
+    public ResponseResult update(@RequestBody UpdateUserRequest request){
         // 获取当前登录用户
         User user= new User();
         BeanUtils.copyProperties(request,user);
         userService.update(user);
-        return "Success";
+        return ResponseResult.SuccessResult();
     }
 
     @PostMapping(value = "/enableToggle")
-    public String enableToggle(@RequestBody UpdateUserRequest request){
+    public ResponseResult enableToggle(@RequestBody UpdateUserRequest request){
         User user= new User();  // 获取当前登录用户
         Boolean enable=user.getEnable();
         user.setEnable(!enable);
         userService.update(user);
-        return "Success";
+        return ResponseResult.SuccessResult();
     }
 
     @PostMapping(value = "/modifyPassword")
-    public String modifyPassword(@RequestBody ModifyUserPasswordRequest request){
+    public ResponseResult modifyPassword(@RequestBody ModifyUserPasswordRequest request){
         User user= new User();  // 获取当前登录用户
         if(request.getOldPassword().equals(user.getPassword())){
             //todo exception
         }
         user.setPassword(request.getNewPassword());
         userService.update(user);
-        return "Success";
+        return ResponseResult.SuccessResult();
     }
 
     @PostMapping(value = "/resetPassword")
-    public String resetPassword(@RequestBody ResetUserPasswordRequest request){
+    public ResponseResult resetPassword(@RequestBody ResetUserPasswordRequest request){
         User user= new User();
         //todo 验证码
         user.setPassword(request.getPassword());
         userService.update(user);
-        return "Success";
+        return ResponseResult.SuccessResult();
+    }
+
+    @PostMapping(value = "/{id}")
+    public ResponseResult findUserInfo(@PathVariable("id") String id){
+        User user=userService.findById(id);
+        return ResponseResult.SuccessResult(user);
     }
 }

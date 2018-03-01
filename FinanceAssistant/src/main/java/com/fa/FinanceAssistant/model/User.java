@@ -1,5 +1,6 @@
 package com.fa.FinanceAssistant.model;
 
+import com.fa.FinanceAssistant.util.UUIDUtils;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,9 +12,8 @@ import javax.persistence.*;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    private String id= UUIDUtils.generateOrderedUUID();
 
     /**
      * 用户名电话号码

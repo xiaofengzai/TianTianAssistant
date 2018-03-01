@@ -12,7 +12,7 @@ import lombok.Data;
 public class ResponseResult<T> {
     @ApiModelProperty(value = "返回的数据")
     private T data;
-    @ApiModelProperty(value = "返回码，1为正常")
+    @ApiModelProperty(value = "返回码，0为正常")
     private Integer code=0;
     @ApiModelProperty(value = "返回消息")
     private String message;
