@@ -2,6 +2,8 @@ package com.fa.FinanceAssistant.model;
 
 import com.fa.FinanceAssistant.util.UUIDUtils;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 
@@ -35,4 +37,5 @@ public class User {
 
     @Column
     private Boolean enable=Boolean.TRUE;
+
 }

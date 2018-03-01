@@ -10,6 +10,7 @@ import com.fa.FinanceAssistant.viewmodel.UpdateUserRequest;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,14 +18,17 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @Api(value = "用户相关")
-@RequestMapping(value = "/api/user")
+@RequestMapping(value = "/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     @PostMapping(value = "/register")
     public ResponseResult register(@RequestBody RegisterUserRequest request){
         User user= new User();
         BeanUtils.copyProperties(request,user);
+        setPassword(user,request.getPassword());
         userService.create(user);
         return ResponseResult.SuccessResult();
     }
@@ -50,10 +54,10 @@ public class UserController {
     @PostMapping(value = "/modifyPassword")
     public ResponseResult modifyPassword(@RequestBody ModifyUserPasswordRequest request){
         User user= new User();  // 获取当前登录用户
-        if(request.getOldPassword().equals(user.getPassword())){
+        if(getEncodeResult(request.getOldPassword()).equals(user.getPassword())){
             //todo exception
         }
-        user.setPassword(request.getNewPassword());
+        setPassword(user,request.getNewPassword());
         userService.update(user);
         return ResponseResult.SuccessResult();
     }
@@ -62,7 +66,7 @@ public class UserController {
     public ResponseResult resetPassword(@RequestBody ResetUserPasswordRequest request){
         User user= new User();
         //todo 验证码
-        user.setPassword(request.getPassword());
+        setPassword(user,request.getPassword());
         userService.update(user);
         return ResponseResult.SuccessResult();
     }
@@ -71,5 +75,13 @@ public class UserController {
     public ResponseResult findUserInfo(@PathVariable("id") String id){
         User user=userService.findById(id);
         return ResponseResult.SuccessResult(user);
+    }
+
+    private String getEncodeResult(String src){
+        return  bCryptPasswordEncoder.encode(src);
+    }
+
+    private void setPassword(User user,String password){
+        user.setPassword( bCryptPasswordEncoder.encode(password));
     }
 }
