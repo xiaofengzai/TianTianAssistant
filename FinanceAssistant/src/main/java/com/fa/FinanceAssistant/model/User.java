@@ -38,4 +38,11 @@ public class User {
     @Column
     private Boolean enable=Boolean.TRUE;
 
+    public User() {
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

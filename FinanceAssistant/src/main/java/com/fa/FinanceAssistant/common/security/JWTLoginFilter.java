@@ -3,6 +3,7 @@ package com.fa.FinanceAssistant.common.security;
 /**
  * Created by wenfeng on 2018/3/1.
  */
+import com.fa.FinanceAssistant.model.AuthUser;
 import com.fa.FinanceAssistant.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -26,7 +27,7 @@ import java.util.Date;
  * 该类继承自UsernamePasswordAuthenticationFilter，重写了其中的2个方法
  * attemptAuthentication ：接收并解析用户凭证。
  * successfulAuthentication ：用户成功登录后，这个方法会被调用，我们在这个方法里生成token。
- * @author zhaoxinguo on 2017/9/12.
+ * @author wenfeng on 2018/03/02
  */
 public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -40,19 +41,12 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
-        try {
-            User user = new ObjectMapper()
-                    .readValue(req.getInputStream(), User.class);
-
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
-                            user.getPassword(),
-                            new ArrayList<>())
-            );
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        req.getParameter("username"),
+                        req.getParameter("password"),
+                        new ArrayList<>())
+        );
     }
 
     // 用户成功登录后，这个方法会被调用，我们在这个方法里生成token

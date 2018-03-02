@@ -23,7 +23,7 @@ import javax.xml.ws.Response;
 /**
  * SpringSecurity的配置
  * 通过SpringSecurity的配置，将JWTLoginFilter，JWTAuthenticationFilter组合在一起
- * @author zhaoxinguo on 2017/9/13.
+ * @author wenfeng on 2018/03/02
  */
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/users/register").permitAll()
-                .antMatchers( "/swagger*?","/v2/api-docs","/static/index.html").permitAll()
+                .antMatchers( "/swagger*?","/v2/api-docs","/index.html").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
