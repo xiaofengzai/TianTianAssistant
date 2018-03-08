@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // 登录
+                Intent intent=new Intent("com.fa.TO_INDEX");
+                startActivity(intent);
             }
         });
     }
