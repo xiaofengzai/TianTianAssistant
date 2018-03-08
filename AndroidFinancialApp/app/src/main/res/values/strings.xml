@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidFinancialApp</string>
+    <string name="registerLabel">注册</string>
+    <string name="loginLabel">登录</string>
+    <string name="go_registerLabel">还没账号，去注册</string>
+    <string name="usernameLabel">手机号码</string>
+    <string name="passwordLabel">密码</string>
+</resources>
